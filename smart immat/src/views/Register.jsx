@@ -49,8 +49,6 @@ export default function Register() {
         </div>
         <button
           type="submit"
-          name="role"
-          value="abonne"
           className="btn btn-primary btn-modern"
         >
           S'inscrire
