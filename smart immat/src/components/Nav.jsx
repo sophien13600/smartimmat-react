@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 
 export default function Nav() {
   return (
+    
     <div>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
@@ -30,7 +31,7 @@ export default function Nav() {
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="btn btn-outline-primary mx-3" to="">
+                <NavLink className="btn btn-outline-primary mx-3" to="/inscription">
                   S'inscrire
                 </NavLink>
               </li>
