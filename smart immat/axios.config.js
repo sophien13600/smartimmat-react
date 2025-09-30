@@ -4,7 +4,12 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((request) => {
-  return request;
-});
-
+    if(request.url.includes('connexion')) {
+        const email = localStorage.getItem('email')
+        // const password = localStorage.getItem('password')
+        const token =btoa(`${email}`)
+        request.headers['Authorization'] = `Basic ${token}`
+      }
+      return request
+    })
 export default api;

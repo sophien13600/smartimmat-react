@@ -1,49 +1,48 @@
-import { useContext } from "react";
+//import { useContext,  } from "react";
+
 import Nav from "../components/Nav";
 import { useState } from "react";
 import api from "../../axios.config";
+//import { GlobalContext } from "../contexts/GlobalContext.jsx";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const { setIsAuthenticated,} = useContext(GlobalContext);
-  const {setUser} = useContext(GlobalContext);
-  const [email, setEmail] = useState("")
-  const [password , setPassword] = useState("")
+  const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
 
   async function handleSubmit(event) {
     event.preventDefault();
-    
+
     try {
       const response = await api.post(
         "/api/auth/login",
-        {
-          email: email.current.value,
-          password: password.current.value,
-        },
+        { email, password },
+
         {
           headers: {
             "Content-Type": "application/json",
           },
-        },
+        }
       );
-      console.log('Réponse:', response.data.nom);
-      if(response){
-        localStorage.setItem('email', response.data.email)
-        setUser(response.data.nom,response.data.role)
-        setIsAuthenticated(true)
-        
-        //setUser(data)
-        navigate('/')
-        console.log('ok');
-        
+
+      if (response) {
+        //     console.log(response.data);
+        // console.log(response.status);
+        // console.log(response.statusText);
+        // console.log(response.headers);
+        localStorage.setItem("email", {email});
+        // localStorage.setItem("password", {password});
+        setUser(response.data.user);
+        setIsAuthenticated(true);
+        navigate("/dashboard");
       }
     } catch (error) {
       console.error("Erreur de connexion:", error);
     }
   }
-    
-    
 
   return (
     <>
@@ -60,8 +59,8 @@ export default function Login() {
               type="email"
               className="form-control"
               name="email"
-              setEmail ={(event) =>event.target.value}
-              value ={email}
+              onChange={(event) => setEmail(event.target.value)}
+              value={email}
               id="email"
               required
             />
@@ -75,7 +74,7 @@ export default function Login() {
               className="form-control"
               name="password"
               id="password"
-              setPassword ={(event) =>event.target.value}
+              onChange={(event) => setPassword(event.target.value)}
               value={password}
               required
             />

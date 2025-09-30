@@ -1,12 +1,28 @@
-import { useState } from "react";
-import { GlobalContext } from "./globalContext";
+import React, { createContext, useState } from "react";
 
-export const Provider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    false || localStorage.getItem("email")
-  );
+// 1. Création du contexte
+export const GlobalContext = createContext({
+  isAuthenticated: false,
+  setIsAuthenticated: () => {},
+  user: null,
+  setUser: () => {},
+});
+
+// 2. Création du provider
+export const GlobalProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
 
   return (
-    <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>
+    <GlobalContext.Provider
+      value={{
+        isAuthenticated,
+        setIsAuthenticated,
+        user,
+        setUser,
+      }}
+    >
+      {children}
+    </GlobalContext.Provider>
   );
 };
