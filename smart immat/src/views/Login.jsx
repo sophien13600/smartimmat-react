@@ -1,14 +1,14 @@
 //import { useContext,  } from "react";
 
 import Nav from "../components/Nav";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import api from "../../axios.config";
 //import { GlobalContext } from "../contexts/GlobalContext.jsx";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function Login() {
-  const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { setIsAuthenticated, setUser} = useContext(AuthContext)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -33,9 +33,10 @@ export default function Login() {
         // console.log(response.status);
         // console.log(response.statusText);
         // console.log(response.headers);
-        localStorage.setItem("email", {email});
+        localStorage.setItem("email", JSON.stringify({email}));
         // localStorage.setItem("password", {password});
         setUser(response.data.user);
+         
         setIsAuthenticated(true);
         navigate("/dashboard");
       }

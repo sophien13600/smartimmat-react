@@ -1,7 +1,7 @@
-import React, { createContext, useState } from "react";
+import { createContext, useState } from "react";
 
 // 1. Création du contexte
-export const GlobalContext = createContext({
+export const AuthContext = createContext({
   isAuthenticated: false,
   setIsAuthenticated: () => {},
   user: null,
@@ -9,12 +9,12 @@ export const GlobalContext = createContext({
 });
 
 // 2. Création du provider
-export const GlobalProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
 
   return (
-    <GlobalContext.Provider
+    <AuthContext.Provider
       value={{
         isAuthenticated,
         setIsAuthenticated,
@@ -23,6 +23,6 @@ export const GlobalProvider = ({ children }) => {
       }}
     >
       {children}
-    </GlobalContext.Provider>
+    </AuthContext.Provider>
   );
 };

@@ -1,17 +1,16 @@
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 //import Nav from "./components/Nav";
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./router/Routes";
-import { GlobalContext } from "./contexts/GlobalContext.jsx";
+import { AuthProvider } from "./contexts/AuthContext.jsx";
 
 function App() {
   return (
-   <GlobalContext value = {false}>
-
-    <BrowserRouter >
-      <AppRoutes />
-    </BrowserRouter>
-   </GlobalContext>
+    <AuthProvider >
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
