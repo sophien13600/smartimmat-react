@@ -1,29 +1,55 @@
 import Nav from "../components/Nav";
+import {useState} from "react";
 
 export default function Register() {
+ const [email, setEmail] = useState("");
+ const [password, setPassword] = useState("");
+ const [confirmPassword, setConfirmPassword] = useState("");
+ const [nom, setNom] = useState("");
+ const [prenom, setPrenom] = useState("");
+ const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const handleSubmit = (event) => {
+        event.preventDefault();
+    }
+
   return (
     <>
     <Nav/>
     <div className="form-container">
-      <form className="auth-form" action="/inscription" method="post">
+      <form onSubmit={handleSubmit} className="auth-form">
         <h2>Inscription</h2>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
             Email
           </label>
-          <input type="email" className="form-control" name="email" id="email" />
+          <input
+              type="email"
+              className="form-control"
+              name="email"
+              onChange={(event) => setEmail(event.target.value)}
+              id="email" />
         </div>
         <div className="mb-3">
           <label htmlFor="nom" className="form-label">
             Nom
           </label>
-          <input type="text" className="form-control" name="nom" id="nom" />
+          <input
+              type="text"
+              className="form-control"
+              name="nom"
+              onChange={(event) => setNom(event.target.value)}
+              id="nom" />
         </div>
         <div className="mb-3">
           <label htmlFor="prenom" className="form-label">
             Prenom
           </label>
-          <input type="text" className="form-control" name="prenom" id="prenom" />
+          <input
+              type="text"
+              className="form-control"
+              name="prenom"
+              onChange={(event) => setPrenom(event.target.value)}
+              id="prenom" />
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
@@ -33,6 +59,7 @@ export default function Register() {
             type="password"
             className="form-control"
             name="password"
+            onChange={(event) => setPassword(event.target.value)}
             id="password"
           />
         </div>
@@ -44,6 +71,7 @@ export default function Register() {
             type="password"
             className="form-control"
             name="confirmPassword"
+            onChange={(event) => setConfirmPassword(event.target.value)}
             id="confirmPassword"
           />
         </div>

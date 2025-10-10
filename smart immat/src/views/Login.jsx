@@ -6,6 +6,7 @@ import api from "../../axios.config";
 //import { GlobalContext } from "../contexts/GlobalContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
+import {Buffer} from "buffer";
 
 export default function Login() {
   const { setIsAuthenticated, setUser} = useContext(AuthContext)
@@ -33,9 +34,11 @@ export default function Login() {
         // console.log(response.status);
         // console.log(response.statusText);
         // console.log(response.headers);
-        localStorage.setItem("email", JSON.stringify({email}));
+          const buf = Buffer.from(`${email}`, 'utf-8');
+          const base64String = buf.toString('base64');
+
         // localStorage.setItem("password", {password});
-        setUser(response.data.user);
+        setUser(localStorage.setItem("user", JSON.stringify(base64String)))
          
         setIsAuthenticated(true);
         navigate("/dashboard");
