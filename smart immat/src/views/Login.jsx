@@ -34,14 +34,25 @@ export default function Login() {
         // console.log(response.status);
         // console.log(response.statusText);
         // console.log(response.headers);
+<<<<<<< HEAD
           const buf = Buffer.from(`${email}`, 'utf-8');
           const base64String = buf.toString('base64');
 
         // localStorage.setItem("password", {password});
         setUser(localStorage.setItem("user", JSON.stringify(base64String)))
          
+=======
+        localStorage.setItem("email", JSON.stringify({ email }));
+
+        // localStorage.setItem("password", {password});
+        setUser(response.data.user);
+        console.log(response.data.user.name);
+        
+>>>>>>> f5c511f (push pull)
         setIsAuthenticated(true);
         navigate("/dashboard");
+        console.log(user);
+        
       }
     } catch (error) {
       console.error("Erreur de connexion:", error);

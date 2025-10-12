@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { createContext, useEffect, useState } from "react";
+=======
+import  { createContext, useState } from "react";
+>>>>>>> f5c511f (push pull)
 
 // 1. Création du contexte
 export const AuthContext = createContext({
@@ -13,6 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
 
+<<<<<<< HEAD
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     const storedAuth = localStorage.getItem("isAuthenticated");
@@ -29,6 +34,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("user", JSON.stringify(user));
   }, [isAuthenticated, user]);
 
+=======
+>>>>>>> f5c511f (push pull)
   return (
     <AuthContext.Provider
       value={{
