@@ -1,15 +1,31 @@
 import Nav from "../components/Nav";
 import {useState} from "react";
+import api from "../../axios.config.js";
 
 export default function Register() {
  const [email, setEmail] = useState("");
  const [password, setPassword] = useState("");
- const [confirmPassword, setConfirmPassword] = useState("");
  const [nom, setNom] = useState("");
  const [prenom, setPrenom] = useState("");
- const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const handleSubmit = (event) => {
+   async function handleSubmit (event) {
         event.preventDefault();
+        //je recupere les inputs et je les envoie au backend
+        try{
+            const response = await api.post(
+                "/api/auth/register",
+                { email, nom, prenom, password },
+                {
+                    headers: { "Content-Type": "application/json"
+                }
+
+            });
+            if(response){
+                console.log(response.data);
+            }
+
+            }catch(error){
+            console.error("Erreur de connexion:", error);
+        }
     }
 
   return (
@@ -71,7 +87,6 @@ export default function Register() {
             type="password"
             className="form-control"
             name="confirmPassword"
-            onChange={(event) => setConfirmPassword(event.target.value)}
             id="confirmPassword"
           />
         </div>
