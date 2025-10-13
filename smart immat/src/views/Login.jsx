@@ -6,7 +6,7 @@ import api from "../../axios.config";
 //import { GlobalContext } from "../contexts/GlobalContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
-import {Buffer} from "buffer";
+//import {Buffer} from "buffer";
 
 export default function Login() {
   const { setIsAuthenticated, setUser} = useContext(AuthContext)
@@ -14,7 +14,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  async function handleSubmit(event) {
+  /*async function handleSubmit(event) {
     event.preventDefault();
 
     try {
@@ -30,36 +30,59 @@ export default function Login() {
       );
 
       if (response) {
-        //     console.log(response.data);
+        // console.log(response.data);
         // console.log(response.status);
         // console.log(response.statusText);
         // console.log(response.headers);
-<<<<<<< HEAD
-          const buf = Buffer.from(`${email}`, 'utf-8');
-          const base64String = buf.toString('base64');
-
+        //const buf = Buffer.from(`${email}`, 'utf-8');
+        //const base64String = buf.toString('base64');
+        // const data = response.json;
+        //const token = data.token;
         // localStorage.setItem("password", {password});
-        setUser(localStorage.setItem("user", JSON.stringify(base64String)))
+        // localStorage.setItem('token', token)
          
-=======
-        localStorage.setItem("email", JSON.stringify({ email }));
-
-        // localStorage.setItem("password", {password});
-        setUser(response.data.user);
-        console.log(response.data.user.name);
-        
->>>>>>> f5c511f (push pull)
+        await handleLogin()
         setIsAuthenticated(true);
         navigate("/dashboard");
-        console.log(user);
+        //console.log(user);
         
       }
     } catch (error) {
       console.error("Erreur de connexion:", error);
     }
   }
+    const handleLogin = async () => {
+        const response = await fetch('http://localhost:3000/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await response.json();
+        const token = data.token;
+        localStorage.setItem('token', token);
+    };*/
+    async function handleSubmit(event) {
+        event.preventDefault();
+        try {
+            const response = await api.post(
+                "/api/auth/login",
+                { email, password },
+                {
+                    headers: { "Content-Type": "application/json" },
+                }
+            );
 
-  return (
+            if (response && response.data.token) {
+                const token = response.data.token;
+                localStorage.setItem('user', token);
+                setIsAuthenticated(true);
+                navigate("/dashboard");
+            }
+        } catch (error) {
+            console.error("Erreur de connexion:", error);
+        }
+    }
+    return (
     <>
       <Nav />
       <div className="form-container">
