@@ -1,12 +1,14 @@
 import Nav from "../components/Nav";
 import {useState} from "react";
 import api from "../../axios.config.js";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
  const [email, setEmail] = useState("");
  const [password, setPassword] = useState("");
  const [nom, setNom] = useState("");
  const [prenom, setPrenom] = useState("");
+ const navigate = useNavigate();
    async function handleSubmit (event) {
         event.preventDefault();
         //je recupere les inputs et je les envoie au backend
@@ -20,7 +22,7 @@ export default function Register() {
 
             });
             if(response){
-                console.log(response.data);
+                navigate("/connexion");
             }
 
             }catch(error){
