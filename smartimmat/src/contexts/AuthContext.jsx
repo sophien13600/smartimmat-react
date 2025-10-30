@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
 
-// 1. Création du contexte
 export const AuthContext = createContext({
   isAuthenticated: false,
   setIsAuthenticated: () => {},
@@ -11,13 +10,13 @@ export const AuthContext = createContext({
   logout: () => {},
 });
 
-// 2. Création du provider
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [isAuthenticated, setIsAuthenticated] = useState(!!token);
   const [user, setUser] = useState(null);
+  const [isHydrated, setIsHydrated] = useState(false); // 👈 flag
 
-  // Hydrate from localStorage on first load
+  // 1️⃣ Hydrate depuis localStorage une seule fois
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
@@ -33,26 +32,28 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
       }
     }
+    setIsHydrated(true); // marque l’hydratation finie
   }, []);
 
-  // Persist token and user
+  // 2️⃣ N’écrit dans localStorage que quand tout est prêt
   useEffect(() => {
+    if (!isHydrated) return; // ⛔ évite d’écraser les données au démarrage
+
     if (token) {
       localStorage.setItem("token", token);
     } else {
       localStorage.removeItem("token");
     }
+
     localStorage.setItem("isAuthenticated", isAuthenticated);
     localStorage.setItem("user", JSON.stringify(user));
-  }, [token, isAuthenticated, user]);
+  }, [token, isAuthenticated, user, isHydrated]);
 
   const logout = () => {
     setToken(null);
     setIsAuthenticated(false);
     setUser(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.setItem("isAuthenticated", "false");
+    localStorage.clear();
   };
 
   return (

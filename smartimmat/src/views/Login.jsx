@@ -2,9 +2,9 @@
 
 import Nav from "../components/Nav";
 import { useContext, useState } from "react";
-import api from "../../axios.config";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
+import api from "../../axios.config";
 
 export default function Login() {
   const { setIsAuthenticated, setUser, setToken } = useContext(AuthContext);
@@ -43,14 +43,18 @@ export default function Login() {
 
       if (response && response.data.token) {
         const token = response.data.token;
+        localStorage.setItem("token", token)
         setToken(token);
         setIsAuthenticated(true);
 
         // Optionally decode token to populate user context
         const payload = decodeJwtPayload(token);
-        if (payload) {
+        const userData = { email: payload.userEmail, nom: payload.userName }
+        if (response.data.token) {
           setUser({ email: payload.userEmail, nom: payload.userName });
         }
+        setUser(userData);
+        localStorage.setItem("user", JSON.stringify(userData));
 
         navigate("/dashboard");
       }
