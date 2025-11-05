@@ -8,6 +8,7 @@ import DashboardLayout from "../views/dashboard/Layout";
 import Files from "../views/dashboard/Files";
 import Historique from "../views/dashboard/Historique";
 import Profil from "../views/dashboard/Profil";
+import Compress from "../views/dashboard/Compress";
 
 const AppRoutes = () => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -20,6 +21,7 @@ const AppRoutes = () => {
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Navigate to="files" replace />} />
           <Route path="files" element={<Files />} />
+          <Route path="compress" element={<Compress />} />
           <Route path="historique" element={<Historique />} />
           <Route path="profil" element={<Profil />} />
         </Route>

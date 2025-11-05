@@ -24,6 +24,7 @@ export default function DashboardLayout() {
         </div>
         <nav className="menu">
           <NavLink to="files" className={({ isActive }) => `menu-item ${isActive ? "active" : ""}`}>Mes fichiers</NavLink>
+          <NavLink to="compress" className={({ isActive }) => `menu-item ${isActive ? "active" : ""}`}>Compresser</NavLink>
           <NavLink to="historique" className={({ isActive }) => `menu-item ${isActive ? "active" : ""}`}>Historique</NavLink>
           <NavLink to="profil" className={({ isActive }) => `menu-item ${isActive ? "active" : ""}`}>Profil</NavLink>
         </nav>

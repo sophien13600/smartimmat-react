@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../../../axios.config";
+import ConvertModal from "../../components/ConvertModal";
 
 export default function Files() {
   const [files, setFiles] = useState([]);
@@ -16,6 +17,7 @@ export default function Files() {
       console.error("Erreur de récupération des fichiers:", err);
     }
   };
+
 
   useEffect(() => {
     fetchFiles();
@@ -60,7 +62,7 @@ export default function Files() {
     onChoose(fakeEvent);
   };
 
-  // Téléchargement direct depuis le serveur
+
   // Compression d'un fichier
   const handleCompress = async (filename) => {
     setMessage("");
@@ -99,21 +101,25 @@ export default function Files() {
     }
   };
 
-  // Conversion d'un fichier
-  const handleConvert = async (filename) => {
-    setMessage("");
-    // Format par défaut PDF
-    let format = window.prompt(
-      "Format de conversion souhaité (pdf, docx, txt)",
-      "pdf"
-    );
-    if (!format) return; // Annulation
-    format = format.toLowerCase();
+  // Ouverture du modal de conversion
+  const [convertOpen, setConvertOpen] = useState(false);
+  const [convertFileTarget, setConvertFileTarget] = useState(null);
 
+  const openConvertModal = (file) => {
+    setConvertFileTarget(file);
+    setConvertOpen(true);
+  };
+
+  // Conversion d'un fichier suite à la validation du modal
+  const handleConvert = async ({ format, compress }) => {
+    if (!convertFileTarget) return;
+    const filename = convertFileTarget.filename;
+
+    setMessage("");
     setProcessing({ id: filename, action: "conversion" });
     try {
       const res = await api.get(`/api/files/convert/${filename}`, {
-        params: { format },
+        params: { format, compress },
         responseType: "blob",
       });
       // Extraction du nom depuis Content-Disposition ou fallback
@@ -143,6 +149,8 @@ export default function Files() {
       setMessage("La conversion a échoué ❌");
     } finally {
       setProcessing({ id: null, action: null });
+      setConvertOpen(false);
+      setConvertFileTarget(null);
     }
   };
 
@@ -234,7 +242,7 @@ export default function Files() {
                   </button>
                   <button
                     className="btn btn-outline-primary ml-2"
-                    onClick={() => handleConvert(f.filename)}
+                    onClick={() => openConvertModal(f)}
                     disabled={processing.id === f.filename}
                   >
                     {processing.id === f.filename &&
@@ -248,6 +256,17 @@ export default function Files() {
           </ul>
         )}
       </section>
+
+
+      <ConvertModal
+        open={convertOpen}
+        file={convertFileTarget}
+        onCancel={() => {
+          setConvertOpen(false);
+          setConvertFileTarget(null);
+        }}
+        onConfirm={handleConvert}
+      />
     </div>
   );
 }
